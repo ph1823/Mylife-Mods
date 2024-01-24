@@ -22,8 +22,8 @@ public class JoinItem extends Item {
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         player.playSound(new SoundEvent(new ResourceLocation("mylife", "smoke")), 1f, 1f);
-        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2));
-        player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 4));
+        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 20*60*2, 2));
+        player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 20*60*8,4));
         itemStack.shrink(1);
         //player.getItemInHand(hand).setCount(player.getItemInHand(hand).getCount() - 1);
         return InteractionResultHolder.consume(itemStack);
