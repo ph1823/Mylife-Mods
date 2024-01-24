@@ -16,6 +16,8 @@ public class MyLifeTitleScreen extends TitleScreen {
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
+
+
         // Draw the texture
         blit(poseStack, 0, 0, 0, 0, 1920, 1017, this.width, this.height);
             /*String s = "Minecraft " + SharedConstants.getCurrentVersion().getName() + " - MyLife";
