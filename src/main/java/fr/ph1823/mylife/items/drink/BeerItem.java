@@ -1,5 +1,6 @@
 package fr.ph1823.mylife.items.drink;
 
+import fr.ph1823.mylife.MyLifeItems;
 import fr.ph1823.mylife.MyLifeMod;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,7 +34,7 @@ public class BeerItem extends PotionItem {
             player.awardStat(Stats.ITEM_USED.get(this));
             if (!player.getAbilities().instabuild) {
                 itemStack.shrink(1);
-                player.getInventory().add(new ItemStack(MyLifeMod.CHOPE_ITEM.get()));
+                player.getInventory().add(new ItemStack(MyLifeItems.CHOPE_ITEM.get()));
             }
         }
 
