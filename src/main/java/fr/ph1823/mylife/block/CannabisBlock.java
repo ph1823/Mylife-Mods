@@ -22,7 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 
 public class CannabisBlock extends CropBlock {
-    public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
+    public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
+    private int ticks = 0;
 
     public CannabisBlock(Properties builder) {
         super(builder);
@@ -37,7 +38,7 @@ public class CannabisBlock extends CropBlock {
     }
     @Override
     public int getMaxAge() {
-        return 3; // Set the maximum age to 3 for three growth stages
+        return 2; // Set the maximum age to 3 for three growth stages
     }
 
     protected boolean mayPlaceOn(BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos) {
@@ -53,6 +54,8 @@ public class CannabisBlock extends CropBlock {
         System.out.println("destroy ");
         level.setBlock(blockPos, MyLifeBlocks.CANNABIS_BLOCK.get().defaultBlockState(), 0);
     }
+
+
 
     /*protected static float getGrowthSpeed(Block p_52273_, BlockGetter p_52274_, BlockPos p_52275_) {
         return 20 * 60;
@@ -72,4 +75,18 @@ public class CannabisBlock extends CropBlock {
         }
 
     }*/
+
+    public void randomTick(@NotNull BlockState blockState, ServerLevel serverLevel, @NotNull BlockPos blockPos, @NotNull Random Rand) {
+        System.out.println("tick");
+        if (!serverLevel.isLoaded(blockPos)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light
+
+        if (this.ticks > 20*60) {
+            //if(serverLevel.getRawBrightness(blockPos, 0) >= 9);
+            System.out.println("grow");
+            //parWorld.func_72921_c(parX, parY, parZ, growStage, 2);
+            //this.ticks = 0;
+        }
+
+        ++this.ticks;
+    }
 }

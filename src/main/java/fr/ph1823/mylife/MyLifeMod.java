@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 import fr.ph1823.mylife.events.ScreenListener;
 import fr.ph1823.mylife.items.JoinItem;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -49,7 +50,7 @@ public class MyLifeMod
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShaderTexture(0, LOGO_TEXTURE);
 
-            gui.blit(poseStack, 0, 0,0,0, 16, 16, 16, 16);
+            GuiComponent.blit(poseStack, 0, 0,0,0, 16, 16, 16, 16);
             gui.getFont().draw(poseStack, "6.0.0" , 8, 16,  869646);
         });
 
@@ -64,6 +65,7 @@ public class MyLifeMod
     private void clientSetup(final FMLClientSetupEvent event) {
         LOGGER.info("render type");
         ItemBlockRenderTypes.setRenderLayer(MyLifeBlocks.CANNABIS_BLOCK.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(MyLifeBlocks.ATM_BLOCK.get(), RenderType.translucent());
     }
 
 }
