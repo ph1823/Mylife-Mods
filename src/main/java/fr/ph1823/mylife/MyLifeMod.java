@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 public class MyLifeMod
 {
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     private static final ResourceLocation LOGO_TEXTURE = new ResourceLocation("mylife", "textures/gui/logo.png");
     public MyLifeMod()
@@ -63,8 +63,10 @@ public class MyLifeMod
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        LOGGER.info("render type");
+        LOGGER.info("Start change render");
         ItemBlockRenderTypes.setRenderLayer(MyLifeBlocks.CANNABIS_BLOCK.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(MyLifeBlocks.HOUBLON_BLOCK.get(), RenderType.cutout());
+
         ItemBlockRenderTypes.setRenderLayer(MyLifeBlocks.ATM_BLOCK.get(), RenderType.translucent());
     }
 

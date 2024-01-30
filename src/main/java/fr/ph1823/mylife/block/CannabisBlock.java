@@ -4,11 +4,9 @@ import fr.ph1823.mylife.MyLifeBlocks;
 import fr.ph1823.mylife.MyLifeItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.BeetrootBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
@@ -16,7 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
@@ -47,7 +44,7 @@ public class CannabisBlock extends CropBlock {
 
     @Override
     protected @NotNull ItemLike getBaseSeedId() {
-        return MyLifeItems.CANNABIS_SEED_ITEM.get(); // Use wheat seeds as the seed item for your crop
+        return MyLifeItems.CANNABIS_SEED.get(); // Use wheat seeds as the seed item for your crop
     }
 
     public void destroy(LevelAccessor level, BlockPos blockPos, BlockState blockState) {
