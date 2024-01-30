@@ -50,8 +50,8 @@ public class MyLifeMod
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShaderTexture(0, LOGO_TEXTURE);
 
-            GuiComponent.blit(poseStack, 0, 0,0,0, 16, 16, 16, 16);
-            gui.getFont().draw(poseStack, "6.0.0" , 8, 16,  869646);
+            GuiComponent.blit(poseStack, 4, 0,0,0, 16, 16, 16, 16);
+            gui.getFont().draw(poseStack, "6.0.0" , 2, 18,  869646);
         });
 
         OverlayRegistry.enableOverlay(logoOverlay, true);
