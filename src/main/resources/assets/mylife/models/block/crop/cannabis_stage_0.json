@@ -1,7 +1,0 @@
-{
-    "parent": "minecraft:block/tinted_cross",
-    "textures": {
-       "cross": "mylife:blocks/cannabis_stage_0"
-    }
-   }
-   
