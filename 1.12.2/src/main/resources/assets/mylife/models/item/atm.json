@@ -1,0 +1,13 @@
+{
+  "loader": "forge:obj",
+  "flip-v": true,
+  "model": "mylife:models/block/money/atm.obj",
+  "textures": {
+    "layer0": "mylife:blocks/money/atm"
+  },
+  "display": {
+    "gui": {
+      "scale": [0.4, 0.4, 0.4]
+    }
+  }
+}

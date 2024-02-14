@@ -1,0 +1,27 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "facing=east,upper=false": { "model":  "mylife:money/atm.obj", "y": 90, "uvlock": true},
+    "facing=west,upper=false": { "model":  "mylife:money/atm.obj", "y": 270, "uvlock": true },
+    "facing=south,upper=false": { "model":  "mylife:money/atm.obj",  "y": 180, "uvlock": true},
+    "facing=north,upper=false": { "model":  "mylife:money/atm.obj"},
+    "inventory": [{}]
+  },
+  "defaults": {
+    "custom": { "flip-v": true },
+    "model": "mylife:money/atm.obj",
+    "textures": {
+      "texture0": "mylife:blocks/money/atm"
+    },
+    "transform": {
+      "gui": {
+        "scale": [0.4, 0.4, 0.4],
+        "translation": [0.0, -0.2, 0.0]
+      },
+      "firstperson": {
+        "scale": [0.4, 0.4, 0.4],
+        "translation": [0, 0.2, 0]
+      }
+    }
+  }
+}
