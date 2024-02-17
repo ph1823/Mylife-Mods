@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "age=0": { "model":  "mylife:block/crop/houblon_stage_0"},
+    "age=1": { "model":  "mylife:block/crop/houblon_stage_1"},
+    "age=2": { "model":  "mylife:block/crop/houblon_stage_2"}
+  }
+}
