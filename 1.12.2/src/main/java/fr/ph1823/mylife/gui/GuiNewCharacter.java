@@ -3,7 +3,6 @@ package fr.ph1823.mylife.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -15,26 +14,36 @@ import org.lwjgl.input.Keyboard;
 import java.io.IOException;
 
 public class GuiNewCharacter extends GuiScreen {
-    private GuiTextField firstName;
-    private int rationX = 8, rationY = 8;
+    private GuiTextField firstName, lastName, age, measure;
+    private int rationX = 6, rationY = 6;
 
     @Override
     public void initGui() {
         Keyboard.enableRepeatEvents(true);
         this.buttonList.clear();
-        firstName = new GuiTextField(1, this.fontRenderer, this.getStartX()  + 6, this.getStartY() + this.fontRenderer.FONT_HEIGHT + 6, 50, 25/2);
+        this.firstName = new GuiTextField(1, this.fontRenderer, this.getStartX()  + 12, this.getStartY() + this.fontRenderer.FONT_HEIGHT * 2 + 6, 80, 25/2);
+
+        this.lastName = new GuiTextField(2, this.fontRenderer, this.getStartX()  + 12, this.getStartY() + this.fontRenderer.FONT_HEIGHT * 6 + 6, 80, 25/2);
+
+        this.age = new GuiTextField(3, this.fontRenderer, this.getStartX()  + 12, this.getStartY() + this.fontRenderer.FONT_HEIGHT * 10 + 6, 20, 25/2);
+        this.age.setValidator(s -> s.matches("^?(0|[1-9][0-9]?)$"));
+
+        this.measure = new GuiTextField(4, this.fontRenderer, this.getStartX() + 12, this.getStartY() + this.fontRenderer.FONT_HEIGHT * 14 + 6, 20, 25/2);
     }
 
     @Override
     public void onGuiClosed()
     {
         Keyboard.enableRepeatEvents(false);
+        super.onGuiClosed();
     }
 
     @Override
     public void updateScreen()
     {
         this.firstName.updateCursorCounter();
+        this.lastName.updateCursorCounter();
+        this.age.updateCursorCounter();
     }
 
     //no slot:  no register in server
@@ -42,14 +51,23 @@ public class GuiNewCharacter extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
         this.drawInput();
-        this.drawString(this.fontRenderer, I18n.format("gui.firstname"), this.getStartX() + 6, this.getStartY() + 6, 0x696969);
+        this.drawTextInput();
         drawEntityOnScreen((this.getStartX() * (this.rationX - 1)) - 48, (this.getStartY() * (this.rationY - 1)) - 24, 60, (this.getStartX() * (this.rationX - 1)) - 48 - mouseX, ((this.getStartY() * (this.rationY - 1)) - 24) - 50 - mouseY, this.mc.player);
         //Minecraft.getMinecraft().entityRenderer.
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
+    private  void drawTextInput() {
+        this.drawString(this.fontRenderer, I18n.format("gui.firstname"), this.getStartX() + 6, this.getStartY() + 6, 0x696969);
+        this.drawString(this.fontRenderer, I18n.format("gui.lastname"), this.getStartX() + 6, this.getStartY() + this.fontRenderer.FONT_HEIGHT * 4 + 6, 0x696969);
+        this.drawString(this.fontRenderer, I18n.format("gui.age"), this.getStartX() + 6, this.getStartY() + this.fontRenderer.FONT_HEIGHT * 8 + 6, 0x696969);
+
+    }
+
     private void drawInput() {
-        firstName.drawTextBox();
+        this.firstName.drawTextBox();
+        this.lastName.drawTextBox();
+        this.age.drawTextBox();
     }
 
     @Override
@@ -63,11 +81,16 @@ public class GuiNewCharacter extends GuiScreen {
     {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         this.firstName.mouseClicked(mouseX, mouseY, mouseButton);
+        this.lastName.mouseClicked(mouseX, mouseY, mouseButton);
+        this.age.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     public void keyTyped(char typedChar, int keyCode) throws IOException
     {
         this.firstName.textboxKeyTyped(typedChar, keyCode);
+        this.lastName.textboxKeyTyped(typedChar, keyCode);
+        this.age.textboxKeyTyped(typedChar, keyCode);
+        super.keyTyped(typedChar, keyCode);
     }
 
     public int getStartX() {
