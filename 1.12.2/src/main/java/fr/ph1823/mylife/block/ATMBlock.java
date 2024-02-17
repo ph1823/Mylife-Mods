@@ -4,6 +4,9 @@ package fr.ph1823.mylife.block;
 import fr.ph1823.mylife.MyLifeBlocks;
 import fr.ph1823.mylife.MyLifeItems;
 import fr.ph1823.mylife.MyLifeMod;
+import fr.ph1823.mylife.capability.IProfile;
+import fr.ph1823.mylife.capability.ProfileCapability;
+import fr.ph1823.mylife.gui.GuiNewCharacter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -12,6 +15,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -103,7 +107,7 @@ public class ATMBlock extends Block {
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         IBlockState newState = state.withProperty(UPPER, true);
-        MyLifeMod.logger.info(worldIn.setBlockState(pos.up(), newState, 2));
+        MyLifeMod.LOGGER.info(worldIn.setBlockState(pos.up(), newState, 2));
         worldIn.notifyNeighborsOfStateChange(pos, state.getBlock(), false);
         worldIn.notifyNeighborsOfStateChange(pos, newState.getBlock(), false);
     }
@@ -123,13 +127,19 @@ public class ATMBlock extends Block {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-       MyLifeMod.logger.info("try open atm");
+       MyLifeMod.LOGGER.info("try open atm");
        if (!world.isRemote) {
             // This is the server side, so we don't want to open the GUI here
             return true;
         } else {
             // This is the client side, so we open the GUI
-            //player.openGui(MyMod.INSTANCE, MyGuiHandler.MY_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+            //player.openGui(MyMod.INSTANCE, MyGuiHandler.MY_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ()); -> register gui ? with open item
+           Minecraft.getMinecraft().displayGuiScreen(new GuiNewCharacter());
+           if(player.hasCapability(ProfileCapability.PROFILE_CAPABILITY, null)) {
+               IProfile profileCapability = player.getCapability(ProfileCapability.PROFILE_CAPABILITY, null);
+              // MyLifeMod.logger.info("money: " + profileCapability.getMoney());
+               profileCapability.setMoney(40);
+           }
             return true;
         }
     }
