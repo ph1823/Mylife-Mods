@@ -16,7 +16,7 @@ public class RegistryEventListener {
     @SubscribeEvent
     public void registerBlocks(RegistryEvent.Register<Block> event)
     {
-        MyLifeMod.logger.info("Register blocks");
+        MyLifeMod.LOGGER.info("Register blocks");
         event.getRegistry().registerAll(
                 MyLifeBlocks.ATM_BLOCK,
                 MyLifeBlocks.CANNABIS_BLOCK,
@@ -29,7 +29,7 @@ public class RegistryEventListener {
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> event)
     {
-        MyLifeMod.logger.info("Register items");
+        MyLifeMod.LOGGER.info("Register items");
         event.getRegistry().registerAll(
                 MyLifeItems.ATM_ITEM,
                 MyLifeItems.BEER_ITEM,
@@ -44,7 +44,7 @@ public class RegistryEventListener {
 
     @SubscribeEvent
     public static void registerModel(ModelRegistryEvent event) {
-        MyLifeMod.logger.info("Register models");
+        MyLifeMod.LOGGER.info("Register models");
         MyLifeItems.registerModels();
         MyLifeBlocks.registerModels();
     }

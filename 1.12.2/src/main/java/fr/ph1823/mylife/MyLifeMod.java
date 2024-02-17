@@ -1,26 +1,25 @@
 package fr.ph1823.mylife;
 
+import fr.ph1823.mylife.network.MoneyMessage;
 import fr.ph1823.mylife.proxy.CommonProxy;
-import net.minecraft.block.BlockDoor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.IntBuffer;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(modid = MyLifeMod.MODID, name = MyLifeMod.NAME, version = MyLifeMod.VERSION)
@@ -34,13 +33,19 @@ public class MyLifeMod
 
     @SidedProxy(clientSide = "fr.ph1823.mylife.proxy.ClientProxy", serverSide = "fr.ph1823.mylife.proxy.ServerProxy")
     public static CommonProxy proxy;
-    public static Logger logger;
+    public static Logger LOGGER;
+
+    public static SimpleNetworkWrapper MYIFE_NETWORK;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        MyLifeMod.logger = event.getModLog();
-        MyLifeMod.logger.info("Pre-init event");
+        MyLifeMod.LOGGER = event.getModLog();
+        MyLifeMod.LOGGER.info("Pre-init event");
         MyLifeMod.proxy.preInit();
+
+        //Network register
+        MYIFE_NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel("MyLife");
+        MYIFE_NETWORK.registerMessage(MoneyMessage.Handler.class, MoneyMessage.class, 0, Side.SERVER);
     }
 
     @Mod.EventHandler

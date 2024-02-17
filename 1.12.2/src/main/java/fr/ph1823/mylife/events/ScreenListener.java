@@ -1,14 +1,22 @@
 package fr.ph1823.mylife.events;
 
 import fr.ph1823.mylife.MyLifeMod;
+import fr.ph1823.mylife.capability.IProfile;
+import fr.ph1823.mylife.capability.ProfileCapability;
 import fr.ph1823.mylife.gui.MyLifeMainMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiOverlayDebug;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.debug.DebugRenderer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,15 +27,14 @@ public class ScreenListener {
 
     @SubscribeEvent
     public static void onGuiOpen(GuiOpenEvent event) {
-
         if(event.getGui() != null && event.getGui().getClass() == GuiMainMenu.class)
             event.setGui(new MyLifeMainMenu());
     }
 
     @SubscribeEvent
-    public void onGameRnender(RenderGameOverlayEvent.Post event) {
+    public void onGameRnender(RenderGameOverlayEvent.Pre event) {
+        Minecraft mc = Minecraft.getMinecraft();
         if(event.getType().equals(RenderGameOverlayEvent.ElementType.HOTBAR)) {
-            Minecraft mc = Minecraft.getMinecraft();
             //On réinitialise la couleur
             GlStateManager.enableAlpha();
             //On dessine ce que l'on souhaite
