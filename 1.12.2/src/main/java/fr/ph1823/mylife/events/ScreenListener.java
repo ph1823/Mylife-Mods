@@ -20,6 +20,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT )
 public class ScreenListener {
@@ -41,6 +42,11 @@ public class ScreenListener {
             mc.getTextureManager().bindTexture(LOGO_TEXTURE);
             Gui.drawModalRectWithCustomSizedTexture(4, 0,0,0, 16, 16, 16, 16);
             mc.fontRenderer.drawString("6.0.0" , 2, 18,  869646);
+
+            if(PermissionAPI.hasPermission(mc.player, "mylife.admin")) {
+                mc.fontRenderer.drawString("Admin mode: Disable", 2, 18 + mc.fontRenderer.FONT_HEIGHT + 2, 869646);
+            }
+
             GlStateManager.disableAlpha();
         }
     }
