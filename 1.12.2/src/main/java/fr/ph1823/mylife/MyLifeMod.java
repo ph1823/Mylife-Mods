@@ -5,6 +5,7 @@ import fr.ph1823.mylife.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -38,17 +39,6 @@ public class MyLifeMod
     public static SimpleNetworkWrapper MYIFE_NETWORK;
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        MyLifeMod.LOGGER = event.getModLog();
-        MyLifeMod.LOGGER.info("Pre-init event");
-        MyLifeMod.proxy.preInit();
-
-        //Network register
-        MYIFE_NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel("MyLife");
-        MYIFE_NETWORK.registerMessage(MoneyMessage.Handler.class, MoneyMessage.class, 0, Side.SERVER);
-    }
-
-    @Mod.EventHandler
     @SideOnly(Side.CLIENT)
     public void onConstruction(FMLConstructionEvent event) {
         Display.setTitle("Mylife - Minecraft 1.12.2");
@@ -62,6 +52,21 @@ public class MyLifeMod
 
         Display.setIcon(icons);
 
+    }
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        MyLifeMod.LOGGER = event.getModLog();
+        MyLifeMod.LOGGER.info("Pre-init event");
+        MyLifeMod.proxy.preInit();
+
+        //Network register
+        MYIFE_NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel("MyLife");
+        MYIFE_NETWORK.registerMessage(MoneyMessage.Handler.class, MoneyMessage.class, 0, Side.SERVER);
+    }
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
+        MyLifeMod.proxy.init();
     }
 
     public ByteBuffer loadIcon(String path) {
