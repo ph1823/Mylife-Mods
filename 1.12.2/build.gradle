@@ -6,28 +6,25 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+        classpath 'org.spongepowered:mixingradle:0.7.+'
     }
 }
         
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.0'
-group = 'fr.ph1823.mylife' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'mylife'
+version = mod_version
+group = mod_group // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = mod_id
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    // The mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   Snapshot are built nightly.
-    // stable_#            Stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
     //mappings channel: 'snapshot', version: '20171003-1.12'
-    mappings channel: 'snapshot', version: '20171003-1.12'
+    mappings channel: mappings_channel, version: mappings_version
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -43,6 +40,8 @@ minecraft {
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
+
+            arg '-torg.spongepowered.asm.launch.MixinTweaker'
         }
 
         server {
@@ -52,8 +51,14 @@ minecraft {
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
+
+            arg '-torg.spongepowered.asm.launch.MixinTweaker'
         }
     }
+}
+
+repositories {
+    maven { url = 'https://repo.spongepowered.org/maven' }
 }
 
 configurations {
@@ -65,35 +70,57 @@ dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+    //minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     //Mixin
     /*annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     apiElements 'org.spongepowered:mixin:0.8.5:processor'
     compile 'org.spongepowered:mixin:0.8.5:processor'*/
-    // You may put jars on which you depend on in ./libs or you may define them like so..
-    // compile "some.group:artifact:version:classifier"
-    // compile "some.group:artifact:version"
+    embed('org.spongepowered:mixin:0.8.3-SNAPSHOT') {
+        exclude module: 'guava'
+        exclude module: 'commons-io'
+        exclude module: 'gson'
+    }
+}
 
-    // Real examples
-    // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+processResources {
+    inputs.property 'version', project.version
+    inputs.property 'mcversion', minecraft_version
 
-    // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
 
-    // These dependencies get remapped to your current MCP mappings
-    // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+        expand 'mod_id': mod_id, 'mod_name': mod_name, 'version': project.version,
+                'mcversion': minecraft_version, 'mod_description': mod_description,
+                'mod_author': mod_author
+    }
 
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
 
+mixin {
+    add sourceSets.main, mod_mixin_refmap.replace('${mod_id}', mod_id)
+    config mod_mixin_configs.replace('${mod_id}', mod_id)
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
 jar {
-    manifest {
+    from {
+        configurations.embed.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude 'LICENSE.txt', 'META-INF/MANIFSET.MF', 'META-INF/maven/**', 'META-INF/*.RSA', 'META-INF/*.SF'
+    }
+
+    manifest.attributes(
+            'ForceLoadAsMod': 'true',
+            'FMLCorePluginContainsFMLMod': 'true',
+            'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+            'TweakOrder': '0'
+    )
+    /*manifest {
         attributes([
             "Specification-Title": "mylife",
             "Specification-Vendor": "mylifesareus",
@@ -103,7 +130,7 @@ jar {
             "Implementation-Vendor" :"mylifesareus",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
-    }
+    }*/
 }
 
 // Example configuration to allow publishing using the maven-publish task

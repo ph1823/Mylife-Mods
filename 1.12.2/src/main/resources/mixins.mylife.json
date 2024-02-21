@@ -1,0 +1,8 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "fr.ph1823.mylife.mixin",
+  "refmap": "refmap.mylife.json",
+  "mixins": [],
+  "client": ["MixinGuiDebug"],
+  "server": []
+}
