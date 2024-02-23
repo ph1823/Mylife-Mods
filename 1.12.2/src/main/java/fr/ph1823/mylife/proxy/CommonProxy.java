@@ -24,5 +24,12 @@ public class CommonProxy {
         //Register permissions
         PermissionAPI.registerNode("mylife.admin", DefaultPermissionLevel.OP, "Permissions grant for admin");
         PermissionAPI.registerNode("mylife.mod", DefaultPermissionLevel.OP, "Permissions grant for moderator");
+
+        PermissionAPI.registerNode("mylife.money.get", DefaultPermissionLevel.OP, "Get money of player");
+        PermissionAPI.registerNode("mylife.money.set", DefaultPermissionLevel.OP, "Set money for player");
+        PermissionAPI.registerNode("mylife.money.give", DefaultPermissionLevel.OP, "Give money for player");
+        PermissionAPI.registerNode("mylife.money.remove", DefaultPermissionLevel.OP, "Remove money for player");
+        //Register command
+
     }
 }
