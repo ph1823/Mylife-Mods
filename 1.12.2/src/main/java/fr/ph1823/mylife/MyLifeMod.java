@@ -1,5 +1,6 @@
 package fr.ph1823.mylife;
 
+import fr.ph1823.mylife.command.MoneyCommand;
 import fr.ph1823.mylife.network.MoneyMessage;
 import fr.ph1823.mylife.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
@@ -7,6 +8,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -29,8 +31,9 @@ public class MyLifeMod
     public static final String MODID = "mylife";
     public static final String NAME = "MyLife";
     public static final String VERSION = "6.0.0";
+    private static final boolean debug = true;
 
-    public static final String SERVER_IP = "45.154.96.24:25565";//"127.0.0.1:25565"
+    public static final String SERVER_IP = debug ? "127.0.0.1:25565" : "45.154.96.24:25565";
 
     @SidedProxy(clientSide = "fr.ph1823.mylife.proxy.ClientProxy", serverSide = "fr.ph1823.mylife.proxy.ServerProxy")
     public static CommonProxy proxy;
@@ -67,6 +70,13 @@ public class MyLifeMod
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         MyLifeMod.proxy.init();
+    }
+
+    @Mod.EventHandler
+    public void init(FMLServerStartingEvent event)
+    {
+        MyLifeMod.LOGGER.info("FMLServerStartingEvent");
+        event.registerServerCommand(new MoneyCommand());
     }
 
     public ByteBuffer loadIcon(String path) {
