@@ -32,5 +32,10 @@ public class ClientProxy extends CommonProxy{
 
         //Register key
         ClientRegistry.registerKeyBinding(MylifeKeyBindings.EXAMPLE_KEY);
+        ClientRegistry.registerKeyBinding(MylifeKeyBindings.PHONE_DOWN);
+        ClientRegistry.registerKeyBinding(MylifeKeyBindings.PHONE_UP);
+        ClientRegistry.registerKeyBinding(MylifeKeyBindings.PHONE_RIGHT);
+        ClientRegistry.registerKeyBinding(MylifeKeyBindings.PHONE_LEFT);
+        ClientRegistry.registerKeyBinding(MylifeKeyBindings.PHONE_SELECT);
     }
 }
