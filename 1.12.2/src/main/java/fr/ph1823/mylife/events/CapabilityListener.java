@@ -5,6 +5,7 @@ import fr.ph1823.mylife.capability.IProfile;
 import fr.ph1823.mylife.capability.ProfileCapability;
 import fr.ph1823.mylife.capability.ProfileCapabilityProvider;
 import fr.ph1823.mylife.network.MoneyMessage;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -36,7 +37,7 @@ public class CapabilityListener {
         // Update the new player's capability with the old player's capability
         newCap.update(oldCap);
 
-
+        MyLifeMod.LOGGER.info("update");
         if(!oldPlayer.world.isRemote) {
             MyLifeMod.MYIFE_NETWORK.sendTo(new MoneyMessage(40), (EntityPlayerMP) newPlayer);
         }

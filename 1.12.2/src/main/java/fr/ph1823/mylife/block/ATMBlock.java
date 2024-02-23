@@ -25,6 +25,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ATMBlock extends Block {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
@@ -126,6 +128,7 @@ public class ATMBlock extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
        MyLifeMod.LOGGER.info("try open atm");
        if (!world.isRemote) {
@@ -135,11 +138,6 @@ public class ATMBlock extends Block {
             // This is the client side, so we open the GUI
             //player.openGui(MyMod.INSTANCE, MyGuiHandler.MY_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ()); -> register gui ? with open item
            Minecraft.getMinecraft().displayGuiScreen(new GuiNewCharacter());
-           if(player.hasCapability(ProfileCapability.PROFILE_CAPABILITY, null)) {
-               IProfile profileCapability = player.getCapability(ProfileCapability.PROFILE_CAPABILITY, null);
-              // MyLifeMod.logger.info("money: " + profileCapability.getMoney());
-               profileCapability.setMoney(40);
-           }
             return true;
         }
     }
