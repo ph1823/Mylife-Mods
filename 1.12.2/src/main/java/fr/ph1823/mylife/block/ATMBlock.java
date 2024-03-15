@@ -1,11 +1,9 @@
 package fr.ph1823.mylife.block;
 
 
-import fr.ph1823.mylife.MyLifeBlocks;
-import fr.ph1823.mylife.MyLifeItems;
+import fr.ph1823.mylife.utility.MyLifeBlocks;
+import fr.ph1823.mylife.utility.MyLifeItems;
 import fr.ph1823.mylife.MyLifeMod;
-import fr.ph1823.mylife.capability.IProfile;
-import fr.ph1823.mylife.capability.ProfileCapability;
 import fr.ph1823.mylife.gui.GuiNewCharacter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;

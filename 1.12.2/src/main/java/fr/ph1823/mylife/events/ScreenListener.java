@@ -1,7 +1,7 @@
 package fr.ph1823.mylife.events;
 
 import fr.ph1823.mylife.MyLifeMod;
-import fr.ph1823.mylife.PairInt;
+import fr.ph1823.mylife.utility.PairInt;
 import fr.ph1823.mylife.gui.MyLifeMainMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
