@@ -1,5 +1,6 @@
-package fr.ph1823.mylife;
+package fr.ph1823.mylife.utility;
 
+import fr.ph1823.mylife.MyLifeMod;
 import fr.ph1823.mylife.block.ATMBlock;
 import fr.ph1823.mylife.block.CannabisBlock;
 import fr.ph1823.mylife.block.HoublonBlock;

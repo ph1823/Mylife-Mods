@@ -1,4 +1,4 @@
-package fr.ph1823.mylife;
+package fr.ph1823.mylife.utility;
 
 public class PairInt {
 
