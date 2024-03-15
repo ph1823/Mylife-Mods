@@ -1,8 +1,8 @@
 package fr.ph1823.mylife.events;
 
 
-import fr.ph1823.mylife.MyLifeBlocks;
-import fr.ph1823.mylife.MyLifeItems;
+import fr.ph1823.mylife.utility.MyLifeBlocks;
+import fr.ph1823.mylife.utility.MyLifeItems;
 import fr.ph1823.mylife.MyLifeMod;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -38,7 +38,8 @@ public class RegistryEventListener {
                 MyLifeItems.HOUBLON_ITEM,
                 MyLifeItems.CANNABIS_SEED,
                 MyLifeItems.HOUBLON_SEED,
-                MyLifeItems.JOINT_ITEM
+                MyLifeItems.JOINT_ITEM,
+                MyLifeItems.PHONE_ITEM
         );
     }
 
