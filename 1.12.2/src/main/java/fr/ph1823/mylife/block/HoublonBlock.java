@@ -1,6 +1,6 @@
 package fr.ph1823.mylife.block;
 
-import fr.ph1823.mylife.MyLifeItems;
+import fr.ph1823.mylife.utility.MyLifeItems;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;

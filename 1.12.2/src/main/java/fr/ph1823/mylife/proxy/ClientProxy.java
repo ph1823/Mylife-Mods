@@ -1,7 +1,7 @@
 package fr.ph1823.mylife.proxy;
 
 import fr.ph1823.mylife.MyLifeMod;
-import fr.ph1823.mylife.MylifeKeyBindings;
+import fr.ph1823.mylife.utility.MylifeKeyBindings;
 import fr.ph1823.mylife.events.ScreenListener;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
