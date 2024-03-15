@@ -1,20 +1,23 @@
 package fr.ph1823.mylife.events;
 
+import fr.ph1823.mylife.utility.MyLifeItems;
 import fr.ph1823.mylife.MyLifeMod;
 import fr.ph1823.mylife.capability.IProfile;
 import fr.ph1823.mylife.capability.ProfileCapability;
 import fr.ph1823.mylife.capability.ProfileCapabilityProvider;
+import fr.ph1823.mylife.data.PhoneSavedData;
 import fr.ph1823.mylife.network.MoneyMessage;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 
 @Mod.EventBusSubscriber
@@ -45,5 +48,22 @@ public class CapabilityListener {
         /*if (event.isWasDeath()) {
             NetworkHandler.sendUpdatePlayerCapabilityPacket(newCap.getCustomData(), (EntityPlayerMP) newPlayer);
         }*/
+    }
+    @SubscribeEvent
+    public void onItemPickup(PlayerInteractEvent.RightClickItem event) {
+        ItemStack newItem = event.getItemStack();
+        if (newItem.getItem() == MyLifeItems.PHONE_ITEM) {
+            MyLifeMod.LOGGER.info("test: "  + newItem.serializeNBT());
+        }
+    }
+
+    @SubscribeEvent
+    public void onWorldLoad(WorldEvent.Load event) {
+        PhoneSavedData.get(event.getWorld());
+    }
+
+    @SubscribeEvent
+    public void onWorldSave(WorldEvent.Save event) {
+        PhoneSavedData.get(event.getWorld()).markDirty();
     }
 }
