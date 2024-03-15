@@ -49,13 +49,6 @@ public class CapabilityListener {
             NetworkHandler.sendUpdatePlayerCapabilityPacket(newCap.getCustomData(), (EntityPlayerMP) newPlayer);
         }*/
     }
-    @SubscribeEvent
-    public void onItemPickup(PlayerInteractEvent.RightClickItem event) {
-        ItemStack newItem = event.getItemStack();
-        if (newItem.getItem() == MyLifeItems.PHONE_ITEM) {
-            MyLifeMod.LOGGER.info("test: "  + newItem.serializeNBT());
-        }
-    }
 
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
