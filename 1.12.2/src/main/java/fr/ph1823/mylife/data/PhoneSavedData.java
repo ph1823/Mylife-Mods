@@ -112,8 +112,9 @@ public class PhoneSavedData extends WorldSavedData {
 
 
     public void setOwner(UUID persistentID, String num) {
-        if(this.phoneNumbers.containsKey(num)) {
+        if(this.phoneNumbers.containsKey(num) && !this.phoneNumbers.get(num).getOwner().equals(persistentID)) {
             this.phoneNumbers.get(num).setOwner(persistentID);
+            this.markDirty();
         }
     }
 }
