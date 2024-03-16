@@ -5,19 +5,18 @@ import net.minecraft.client.gui.FontRenderer;
 import org.lwjgl.opengl.GL11;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class GuiSMSEntry {
 
     private final FontRenderer fontRender;
     private final String num;
     private String sms;
-    private Date date;
-    private SimpleDateFormat dayFormat = new SimpleDateFormat("dd/MM");
-    private SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm");
-    private boolean limit = false;
+    private final Date date;
+    private final SimpleDateFormat dayFormat = new SimpleDateFormat("dd/MM");
+    private final SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm");
+    private final boolean limit;
 
     public GuiSMSEntry(String sms, Date date, boolean limit, String num) {
         this.fontRender = Minecraft.getMinecraft().fontRenderer;
@@ -43,11 +42,21 @@ public class GuiSMSEntry {
         GL11.glScalef(0.6F, 0.6F, 1F);
         this.fontRender.drawSplitString(this.sms, x, y + this.fontRender.FONT_HEIGHT + i * 8 + 2, this.fontRender.getStringWidth("a") * 24, 16777215);
 
+        // get format use in sms date
+        // Create a Calendar instance and set it to the current date
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(this.date);
+        // Add one day to the current date
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        Date oneDayLater = calendar.getTime();
+        SimpleDateFormat format = this.hourFormat;
+        if(this.date.after(oneDayLater)) format = this.dayFormat;
+
         //Reset scale and postion
         GL11.glScalef(1.6F, 1.6F, 1.6F);
         GL11.glScalef(0.5F, 0.5F, 1F);
         GL11.glTranslatef(0.0F, 2F, 0.0F);
-        this.fontRender.drawString(hourFormat.format(this.date), ((x + this.fontRender.getStringWidth("a") * 16) * 2),  (y * 2) + i-8,16777215);
+        this.fontRender.drawString(format.format(this.date), ((x + this.fontRender.getStringWidth("a") * 16) * 2),  (y * 2) + i-8,16777215);
         GL11.glScalef(1.0F, 1.0F, 1.0F);
         GL11.glPopMatrix();
     }

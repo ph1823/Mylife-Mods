@@ -1,17 +1,17 @@
 package fr.ph1823.mylife.gui.phone;
 
 import fr.ph1823.mylife.MyLifeMod;
-import fr.ph1823.mylife.data.PhoneSavedData;
 import fr.ph1823.mylife.utility.SMS;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GuiSMS extends GuiScreen {
-    private List<GuiSMSEntry> smsList = new ArrayList<>();
-    //private HashMap<String, List<SMS>> smsList;
+    private final List<GuiSMSEntry> smsList = new ArrayList<>();
 
     public GuiSMS(HashMap<String, List<SMS>> smsList) {
        for(Map.Entry<String, List<SMS>> sms: smsList.entrySet())
