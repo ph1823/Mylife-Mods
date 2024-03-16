@@ -12,15 +12,19 @@ import static org.lwjgl.opengl.GL11.*;
 public class GuiSMSEntry {
 
     private final FontRenderer fontRender;
+    private final String num;
     private String sms;
     private Date date;
     private SimpleDateFormat dayFormat = new SimpleDateFormat("dd/MM");
     private SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm");
+    private boolean limit = false;
 
-    public GuiSMSEntry(String sms, Date date, boolean limit) {
+    public GuiSMSEntry(String sms, Date date, boolean limit, String num) {
         this.fontRender = Minecraft.getMinecraft().fontRenderer;
         this.sms = sms;
         this.date = date;
+        this.limit = limit;
+        this.num = num;
 
         if(limit && this.sms.length() > 24)
             this.sms = this.sms.substring(0, 24);
@@ -29,10 +33,13 @@ public class GuiSMSEntry {
     public void drawEntry(int x, int y, int i ) {
         //
         GL11.glPushMatrix();
-        GL11.glScalef(0.8F, 0.8F, 1F);
-        this.fontRender.drawString("0000000", x, y + i * 8, 16777215);
 
-        GL11.glScalef(1.8F, 1.8F, 1F);
+        // On est dans la liste des SMS pour tout les num, on affiche le num
+        if(limit) {
+            GL11.glScalef(0.8F, 0.8F, 1F);
+            this.fontRender.drawString(this.num, x, y + i * 8, 16777215);
+            GL11.glScalef(1.8F, 1.8F, 1F);
+        }
         GL11.glScalef(0.6F, 0.6F, 1F);
         this.fontRender.drawSplitString(this.sms, x, y + this.fontRender.FONT_HEIGHT + i * 8 + 2, this.fontRender.getStringWidth("a") * 24, 16777215);
 

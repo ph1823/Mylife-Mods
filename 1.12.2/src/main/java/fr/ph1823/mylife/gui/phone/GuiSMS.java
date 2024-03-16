@@ -1,32 +1,27 @@
 package fr.ph1823.mylife.gui.phone;
 
 import fr.ph1823.mylife.MyLifeMod;
+import fr.ph1823.mylife.data.PhoneSavedData;
+import fr.ph1823.mylife.utility.SMS;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class GuiSMS extends GuiScreen {
-
-    private final String num;
     private List<GuiSMSEntry> smsList = new ArrayList<>();
     //private HashMap<String, List<SMS>> smsList;
 
-    public GuiSMS(String num) {
-        this.num = num;
-        this.smsList.add(new GuiSMSEntry("Ceci est un très long message de plus de 24 charactères.",  new Date(), true));
-        this.smsList.add(new GuiSMSEntry("test",  new Date(), true));
-        //
-        //smsList = data.getDataFromPhone(this.num);
+    public GuiSMS(HashMap<String, List<SMS>> smsList) {
+       for(Map.Entry<String, List<SMS>> sms: smsList.entrySet())
+            this.smsList.add(new GuiSMSEntry(sms.getValue().get(0).getMessage(), sms.getValue().get(0).getDate(), true, sms.getKey()));
     }
 
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.buttonList.clear();
-        //for (String sender: smsList.keySet())
 
         for(int i = 0; i < smsList.size(); ++i) {
             GuiSMSEntry smsEntry = smsList.get(i);
