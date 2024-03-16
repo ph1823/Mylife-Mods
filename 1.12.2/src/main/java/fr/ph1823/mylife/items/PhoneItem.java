@@ -2,6 +2,7 @@ package fr.ph1823.mylife.items;
 
 import fr.ph1823.mylife.data.PhoneSavedData;
 import fr.ph1823.mylife.events.ScreenListener;
+import fr.ph1823.mylife.utility.MylifeKeyBindings;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,16 +22,20 @@ import java.util.Random;
 
 public class PhoneItem extends ItemBase {
 
-    private long latClick = System.currentTimeMillis() - 10000;
+    private long lastClick = System.currentTimeMillis() - 10000;
     public PhoneItem(String name) {
         super(name);
     }
 
     @SideOnly(Side.CLIENT)
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, @Nonnull EntityPlayer playerIn, @Nonnull EnumHand handIn)
     {
-        if(System.currentTimeMillis() >= this.latClick + 100)
-            ScreenListener.phoneOpen = true;
+        if(System.currentTimeMillis() >= this.lastClick + 100) {
+            ScreenListener.phoneOpen = !ScreenListener.phoneOpen;
+            this.lastClick = System.currentTimeMillis();
+            MylifeKeyBindings.num = String.valueOf(this.getNumber(playerIn.getHeldItem(handIn)));
+        }
 
         return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
     }
@@ -39,8 +44,9 @@ public class PhoneItem extends ItemBase {
     @Override
     public void onUpdate(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull Entity entityIn, int itemSlot, boolean isSelected)
     {
-        if(!worldIn.isRemote && getNumber(stack) == 0) {
-            this.setNumber(stack, worldIn);
+        if(!worldIn.isRemote) {
+            if(getNumber(stack) == 0) this.setNumber(stack, worldIn);
+            PhoneSavedData.get(worldIn).setOwner(entityIn.getPersistentID(), this.getNumber(stack) + "");
         }
     }
     public void setNumber(ItemStack itemStack, World world)

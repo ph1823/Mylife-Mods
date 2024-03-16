@@ -43,10 +43,7 @@ public class MylifeKeyBindings {
             if (PHONE_SELECT.isKeyDown()) {
                 //Prmeière ligne du téléphone
                 if(ScreenListener.pos.getY() == 1) {
-                    if(ScreenListener.pos.getX() == 1) {
-                        MyLifeMod.MYIFE_NETWORK.sendToServer(new SMSListMessage());
-                        Minecraft.getMinecraft().displayGuiScreen(new GuiSMS(num));
-                    }
+                    if(ScreenListener.pos.getX() == 1) MyLifeMod.MYIFE_NETWORK.sendToServer(new SMSListMessage(num));
                     else if(ScreenListener.pos.getX() == 2) Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Nos meilleur scientifique sont sur le coup pour vous faire écoutez toutes la musique sur un seul endroit !"));
                     else if(ScreenListener.pos.getX() == 3) Minecraft.getMinecraft().player.sendMessage(new TextComponentString("L'application prise de note va bientôt s'ouvrir"));
                 }
