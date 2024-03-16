@@ -2,7 +2,8 @@ package fr.ph1823.mylife;
 
 import fr.ph1823.mylife.command.MoneyCommand;
 import fr.ph1823.mylife.network.MoneyMessage;
-import fr.ph1823.mylife.network.SMSListMessage;
+import fr.ph1823.mylife.network.phone.SMSListMessage;
+import fr.ph1823.mylife.network.phone.SMSSendMessage;
 import fr.ph1823.mylife.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -69,6 +70,7 @@ public class MyLifeMod
         MYIFE_NETWORK.registerMessage(MoneyMessage.Handler.class, MoneyMessage.class, 1, Side.CLIENT);
         MYIFE_NETWORK.registerMessage(SMSListMessage.Handler.class, SMSListMessage.class, 2, Side.SERVER);
         MYIFE_NETWORK.registerMessage(SMSListMessage.Handler.class, SMSListMessage.class, 3, Side.CLIENT);
+        MYIFE_NETWORK.registerMessage(SMSSendMessage.Handler.class, SMSSendMessage.class, 4, Side.SERVER);
     }
 
     @Mod.EventHandler
