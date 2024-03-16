@@ -1,6 +1,5 @@
-package fr.ph1823.mylife.network;
+package fr.ph1823.mylife.network.phone;
 
-import fr.ph1823.mylife.MyLifeMod;
 import fr.ph1823.mylife.data.PhoneSavedData;
 import fr.ph1823.mylife.gui.phone.GuiSMS;
 import fr.ph1823.mylife.utility.SMS;
