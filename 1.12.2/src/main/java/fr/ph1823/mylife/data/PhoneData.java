@@ -15,22 +15,26 @@ public class PhoneData {
         return smsList;
     }
 
-    public void addSms(String num, String content, String date) {
+    public void addSMS(String num, String content, String date, PhoneSavedData data) {
         try {
             SMS sms = new SMS(content, date);
-            if (!smsList.containsKey(num)) this.smsList.put(num, new LinkedList<>(Collections.singletonList(sms)));
-            else this.smsList.get(num).add(sms);
+            this.addSMS(num, sms, data);
         } catch (ParseException e) {
             MyLifeMod.LOGGER.info("Parse date error of sms");
             e.printStackTrace();
         }
     }
 
-    public void addSms(String num, String content, Date date) {
-        // todo male a function to evitate duplicate code
+    public void addSMS(String num, String content, Date date, PhoneSavedData data) {
         SMS sms = new SMS(content, date);
+        this.addSMS(num, sms, data);
+    }
+
+    public void addSMS(String num, SMS sms, PhoneSavedData data) {
         if (!smsList.containsKey(num)) this.smsList.put(num, new LinkedList<>(Collections.singletonList(sms)));
         else this.smsList.get(num).add(sms);
+
+        if(data != null) data.markDirty();
     }
 
     public List<String> getCallHistorys() {
