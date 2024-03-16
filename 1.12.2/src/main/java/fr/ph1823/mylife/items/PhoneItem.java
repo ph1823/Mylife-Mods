@@ -1,7 +1,9 @@
 package fr.ph1823.mylife.items;
 
+import fr.ph1823.mylife.MyLifeMod;
 import fr.ph1823.mylife.data.PhoneSavedData;
 import fr.ph1823.mylife.events.ScreenListener;
+import fr.ph1823.mylife.network.phone.SMSSendMessage;
 import fr.ph1823.mylife.utility.MylifeKeyBindings;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -35,6 +37,7 @@ public class PhoneItem extends ItemBase {
             ScreenListener.phoneOpen = !ScreenListener.phoneOpen;
             this.lastClick = System.currentTimeMillis();
             MylifeKeyBindings.num = String.valueOf(this.getNumber(playerIn.getHeldItem(handIn)));
+            MyLifeMod.MYIFE_NETWORK.sendToServer(new SMSSendMessage(MylifeKeyBindings.num, MylifeKeyBindings.num, "coucou ma poule ca va ?"));
         }
 
         return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));

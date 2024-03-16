@@ -43,7 +43,7 @@ public class PhoneSavedData extends WorldSavedData {
                 for (NBTBase nbtBase : smsList) {
                     if(nbtBase instanceof NBTTagString) {
                         String[] dataInfo = ((NBTTagString) nbtBase).getString().split("::", 2);
-                        data.addSms(num, dataInfo[0], dataInfo[1]);
+                        data.addSMS(num, dataInfo[0], dataInfo[1], null);
                     }
                 }
             }
