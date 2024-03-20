@@ -30,9 +30,8 @@ public class GuiSMSEntry {
     }
 
     public void drawEntry(int x, int y, int i ) {
-        //
+        // ouverture de la matrix opengl
         GL11.glPushMatrix();
-
         // On est dans la liste des SMS pour tout les num, on affiche le num
         if(limit) {
             GL11.glScalef(0.8F, 0.8F, 1F);
