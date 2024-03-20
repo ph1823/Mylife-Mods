@@ -1,8 +1,8 @@
 package fr.ph1823.mylife.network.phone;
 
 import fr.ph1823.mylife.data.PhoneSavedData;
-import fr.ph1823.mylife.gui.phone.GuiSMS;
-import fr.ph1823.mylife.utility.SMS;
+import fr.ph1823.mylife.gui.phone.GuiListSMS;
+import fr.ph1823.mylife.utility.phone.SMS;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -81,7 +81,7 @@ public class SMSListMessage implements IMessage {
                 if(data.getDataFromPhone(message.num).getOwner().equals(playerMP.getPersistentID()))
                     return new SMSListMessage(data.getDataFromPhone(message.num).getSmsList());
                 else return null;
-            } else Minecraft.getMinecraft().displayGuiScreen(new GuiSMS(message.objects));
+            } else Minecraft.getMinecraft().displayGuiScreen(new GuiListSMS(message.objects));
             return null; // no response in this case
         }
     }
