@@ -9,9 +9,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class PhoneData {
-    private HashMap<String, List<SMS>> smsList = new HashMap<>();
-    private List<String> callHistorys = new LinkedList<>();
-    private List<Contact> contacts = new LinkedList<>();
+    private final List<String> callHistorys = new LinkedList<>();
+    private final List<Contact> contacts = new LinkedList<>();
+    private final List<Integer> conversations = new LinkedList<>();
     private UUID owner;
 
     public HashMap<String, List<SMS>> getSmsList() {
@@ -58,20 +58,20 @@ public class PhoneData {
     public List<Contact> findContactByLastname(String lastname) {
         return this.contacts
                 .stream()
-                .filter((contact) -> contact.getLastname() == lastname)
+                .filter((contact) -> contact.getLastname().equals(lastname))
                 .collect(Collectors.toList());
     }
 
     public List<Contact> findContactByFirstname(String firstname) {
         return this.contacts
                 .stream()
-                .filter((contact) -> contact.getLastname() == firstname)
+                .filter((contact) -> contact.getLastname().equals(firstname))
                 .collect(Collectors.toList());
     }
 
     @Override
     public String toString() {
-        return "SMS: " + this.smsList.size();
+        return "SMS: ";
     }
 
     public void setOwner(UUID persistentID) {
@@ -80,5 +80,9 @@ public class PhoneData {
 
     public UUID getOwner() {
         return this.owner;
+    }
+
+    public List<Integer> getConversations() {
+        return conversations;
     }
 }
