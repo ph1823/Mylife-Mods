@@ -1,22 +1,25 @@
 package fr.ph1823.mylife.data;
 
 import fr.ph1823.mylife.MyLifeMod;
-import fr.ph1823.mylife.utility.SMS;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
+import fr.ph1823.mylife.utility.phone.Contact;
+import fr.ph1823.mylife.utility.phone.Conversation;
+import fr.ph1823.mylife.utility.phone.PhoneData;
+import fr.ph1823.mylife.utility.phone.SMS;
+import net.minecraft.nbt.*;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 public class PhoneSavedData extends WorldSavedData {
     private static final String DATA_NAME = MyLifeMod.MODID + "_phone";
     private final HashMap<String, PhoneData> phoneNumbers = new HashMap<>();
+    private List<Conversation> conversations = new LinkedList<>();
 
     public PhoneSavedData() {
         super(DATA_NAME);
@@ -32,58 +35,70 @@ public class PhoneSavedData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        for(String key: nbt.getKeySet()) {
-            NBTTagCompound numberNBT = nbt.getCompoundTag(key);
+        for(String key: nbt.getCompoundTag("phones").getKeySet()) {
+            NBTTagCompound phoneData = nbt.getCompoundTag(key);
             PhoneData data = new PhoneData();
 
             //Load sms in phone data
-            NBTTagCompound smsTAG = numberNBT.getCompoundTag("sms");
-            for (String num : smsTAG.getKeySet()) {
-                NBTTagList smsList = smsTAG.getTagList(num, 10);
-                for (NBTBase nbtBase : smsList) {
-                    if(nbtBase instanceof NBTTagString) {
-                        String[] dataInfo = ((NBTTagString) nbtBase).getString().split("::", 2);
-                        data.addSMS(num, dataInfo[0], dataInfo[1], null);
-                    }
-                }
-            }
+            NBTTagCompound conversationList = phoneData.getCompoundTag("conversation");
 
             //Load history in phone data
 
             // Set owner
-            data.setOwner(UUID.fromString(numberNBT.getString("owner")));
+            data.setOwner(UUID.fromString(phoneData.getString("owner")));
             //Add data in hashmap
             this.phoneNumbers.put(key, data);
         }
 
         MyLifeMod.LOGGER.info("hashmap: " + this.phoneNumbers.entrySet().size());
-
     }
 
     @Override
     @Nonnull
     public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound compound) {
-        //Get data of stocked number phone
+        //Save data of phonesData
+        NBTTagCompound phonesData = new NBTTagCompound();
+        NBTTagList conversationsTag = new NBTTagList();
         this.phoneNumbers.forEach((number, phoneData) -> {
-            NBTTagCompound numberTAG = new NBTTagCompound();
-            NBTTagCompound numSMSTAG = new NBTTagCompound();
-            //Create SMS list in nbt and add all existing SMS
-            phoneData.getSmsList().forEach((senderNum, smsList) -> {
-                //sms is json with date and content
-                NBTTagList smsListTAG = new NBTTagList();
-                for (SMS sms : smsList)
-                    smsListTAG.appendTag(new NBTTagString(sms.toString()));
+            NBTTagCompound phoneDataTag = new NBTTagCompound();
 
-                numSMSTAG.setTag(senderNum, smsListTAG);
-            });
+            // Save conversation id in list
+            NBTTagList conversationList = new NBTTagList();
+            phoneData.getConversations().forEach(id -> conversationList.appendTag(new NBTTagInt(id)));
 
             //Get history
-            numberTAG.setTag("sms", numSMSTAG);
-            numberTAG.setTag("call_history", new NBTTagList());
-            numberTAG.setString("owner", phoneData.getOwner().toString());
+            phoneDataTag.setTag("conversation", conversationList);
+            phoneDataTag.setTag("call_history", new NBTTagList());
+            phoneDataTag.setString("owner", phoneData.getOwner().toString());
             //NBTTagString
-            compound.setTag(number, numberTAG);
+            phonesData.setTag(number, phoneDataTag);
         });
+
+        // set tag phones to save data in key named "phones"
+        compound.setTag("phones", phonesData);
+
+        // saved conversations
+        this.conversations.forEach((conversation) -> {
+            NBTTagCompound conversationTag = new NBTTagCompound();
+            conversationTag.setIntArray("numbers", conversation.getNumbers());
+
+            // Save sms list
+            NBTTagList smsList = new NBTTagList();
+            conversation.getSmsList().forEach(sms -> {
+                NBTTagCompound smsTag = new NBTTagCompound();
+                smsTag.setLong("date", sms.getDate().getTime());
+                smsTag.setString("message", sms.getMessage());
+
+                // Convet contact to nbt tag
+                smsTag.setTag("contact", sms.getContact().toNBT());
+                smsList.appendTag(smsTag);
+            });
+
+            conversationTag.setTag("sms", smsList);
+            conversationsTag.appendTag(smsList);
+        });
+
+        compound.setTag("conversation", conversationsTag);
         return compound;
     }
 
@@ -116,5 +131,19 @@ public class PhoneSavedData extends WorldSavedData {
             this.phoneNumbers.get(num).setOwner(persistentID);
             this.markDirty();
         }
+    }
+
+    public Conversation findConversation(int num1, int num2) {
+        return this.conversations
+                .stream()
+                .filter(conversation -> conversation.containsNum(num1) && conversation.containsNum(num2))
+                .findFirst().orElse(new Conversation(this.conversations.size(), num1, num2));
+    }
+
+    public void addSMS(int sender, int receiver, String message) {
+        Conversation conversation = this.findConversation(sender, receiver);
+        conversation.addSMS(message);
+
+        if(!this.conversations.contains(conversation)) this.conversations.add(conversation);
     }
 }

@@ -43,4 +43,8 @@ public class SMS {
     public String toString() {
         return SMS_FORMATTER.format(date) + "::" + this.message;
     }
+
+    public Contact getContact() {
+        return this.contact;
+    }
 }

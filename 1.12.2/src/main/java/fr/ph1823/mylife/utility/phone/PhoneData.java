@@ -14,32 +14,6 @@ public class PhoneData {
     private final List<Integer> conversations = new LinkedList<>();
     private UUID owner;
 
-    public HashMap<String, List<SMS>> getSmsList() {
-        return smsList;
-    }
-
-    public void addSMS(String num, String content, String date, PhoneSavedData data) {
-        try {
-            SMS sms = new SMS(content, date);
-            this.addSMS(num, sms, data);
-        } catch (ParseException e) {
-            MyLifeMod.LOGGER.info("Parse date error of sms");
-            e.printStackTrace();
-        }
-    }
-
-    public void addSMS(String num, String content, Date date, PhoneSavedData data) {
-        SMS sms = new SMS(content, date);
-        this.addSMS(num, sms, data);
-    }
-
-    public void addSMS(String num, SMS sms, PhoneSavedData data) {
-        if (!smsList.containsKey(num)) this.smsList.put(num, new LinkedList<>(Collections.singletonList(sms)));
-        else this.smsList.get(num).add(sms);
-
-        if(data != null) data.markDirty();
-    }
-
     public List<String> getCallHistorys() {
         return callHistorys;
     }
@@ -52,7 +26,7 @@ public class PhoneData {
         return this.contacts
                 .stream()
                 .filter((contact) -> contact.getNum() == num)
-                .findFirst().orElseGet(() -> new Contact(num));
+                .findFirst().orElse(new Contact(num));
     }
 
     public List<Contact> findContactByLastname(String lastname) {
