@@ -1,14 +1,17 @@
-package fr.ph1823.mylife.data;
+package fr.ph1823.mylife.utility.phone;
 
 import fr.ph1823.mylife.MyLifeMod;
-import fr.ph1823.mylife.utility.SMS;
+import fr.ph1823.mylife.data.PhoneSavedData;
+import fr.ph1823.mylife.utility.phone.SMS;
 
 import java.text.ParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PhoneData {
     private HashMap<String, List<SMS>> smsList = new HashMap<>();
     private List<String> callHistorys = new LinkedList<>();
+    private List<Contact> contacts = new LinkedList<>();
     private UUID owner;
 
     public HashMap<String, List<SMS>> getSmsList() {
@@ -43,6 +46,27 @@ public class PhoneData {
 
     public void addCall(String number) {
         this.callHistorys.add(number);
+    }
+
+    public Contact findContact(int num) {
+        return this.contacts
+                .stream()
+                .filter((contact) -> contact.getNum() == num)
+                .findFirst().orElseGet(() -> new Contact(num));
+    }
+
+    public List<Contact> findContactByLastname(String lastname) {
+        return this.contacts
+                .stream()
+                .filter((contact) -> contact.getLastname() == lastname)
+                .collect(Collectors.toList());
+    }
+
+    public List<Contact> findContactByFirstname(String firstname) {
+        return this.contacts
+                .stream()
+                .filter((contact) -> contact.getLastname() == firstname)
+                .collect(Collectors.toList());
     }
 
     @Override
