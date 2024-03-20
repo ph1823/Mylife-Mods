@@ -1,5 +1,7 @@
 package fr.ph1823.mylife.utility.phone;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 public class Contact {
 
     private int num;
@@ -38,5 +40,14 @@ public class Contact {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public NBTTagCompound toNBT() {
+        NBTTagCompound contactTag = new NBTTagCompound();
+        contactTag.setString("firstname", this.getFirstname());
+        contactTag.setString("lastname", this.getLastname());
+        contactTag.setInteger("number", this.getNum());
+
+        return contactTag;
     }
 }
