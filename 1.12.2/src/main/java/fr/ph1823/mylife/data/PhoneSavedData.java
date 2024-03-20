@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class PhoneSavedData extends WorldSavedData {
     private static final String DATA_NAME = MyLifeMod.MODID + "_phone";
-    private final HashMap<String, PhoneData> phoneNumbers = new HashMap<>();
+    private final HashMap<Integer, PhoneData> phoneNumbers = new HashMap<>();
     private List<Conversation> conversations = new LinkedList<>();
 
     public PhoneSavedData() {
@@ -29,7 +29,7 @@ public class PhoneSavedData extends WorldSavedData {
         super(name);
     }
 
-    public PhoneData getDataFromPhone(String num) {
+    public PhoneData getDataFromPhone(int num) {
         return this.phoneNumbers.get(num);
     }
 
@@ -47,7 +47,7 @@ public class PhoneSavedData extends WorldSavedData {
             // Set owner
             data.setOwner(UUID.fromString(phoneData.getString("owner")));
             //Add data in hashmap
-            this.phoneNumbers.put(key, data);
+            this.phoneNumbers.put(Integer.parseInt(key), data);
         }
 
         MyLifeMod.LOGGER.info("hashmap: " + this.phoneNumbers.entrySet().size());
@@ -71,7 +71,7 @@ public class PhoneSavedData extends WorldSavedData {
             phoneDataTag.setTag("call_history", new NBTTagList());
             phoneDataTag.setString("owner", phoneData.getOwner().toString());
             //NBTTagString
-            phonesData.setTag(number, phoneDataTag);
+            phonesData.setTag(String.valueOf(number), phoneDataTag);
         });
 
         // set tag phones to save data in key named "phones"
@@ -118,7 +118,7 @@ public class PhoneSavedData extends WorldSavedData {
 
     public boolean addNumber(int number) {
         if(!this.phoneNumbers.containsKey(String.valueOf(number))) {
-            this.phoneNumbers.put(String.valueOf(number), new PhoneData());
+            this.phoneNumbers.put(number, new PhoneData());
             this.markDirty();
             return true;
         }
@@ -126,7 +126,7 @@ public class PhoneSavedData extends WorldSavedData {
     }
 
 
-    public void setOwner(UUID persistentID, String num) {
+    public void setOwner(UUID persistentID, int num) {
         if(this.phoneNumbers.containsKey(num) && !this.phoneNumbers.get(num).getOwner().equals(persistentID)) {
             this.phoneNumbers.get(num).setOwner(persistentID);
             this.markDirty();

@@ -25,7 +25,7 @@ public class MylifeKeyBindings {
     public static final KeyBinding PHONE_SELECT = new KeyBinding("key.phone_select_app", Keyboard.KEY_RETURN, CATEGORY);
     private long lastPressPhone = System.currentTimeMillis() - 10000;
 
-    public static String num = "";
+    public static int num = -1;
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (EXAMPLE_KEY.isPressed()) {

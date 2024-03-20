@@ -12,12 +12,13 @@ import java.util.Date;
 
 public class SMSSendMessage implements IMessage {
 
-    private String sender, receiver, message;
+    private int sender, receiver;
+    private String message;
 
     public SMSSendMessage() {
     }
 
-    public SMSSendMessage(String sender, String receiver, String message) {
+    public SMSSendMessage(int sender, int receiver, String message) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
@@ -25,15 +26,15 @@ public class SMSSendMessage implements IMessage {
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        this.sender = ByteBufUtils.readUTF8String(buf);
-        this.receiver = ByteBufUtils.readUTF8String(buf);
+        this.sender = buf.readInt();
+        this.receiver = buf.readInt();
         this.message = ByteBufUtils.readUTF8String(buf);
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf, this.sender);
-        ByteBufUtils.writeUTF8String(buf, this.receiver);
+        buf.writeInt(this.sender);
+        buf.writeInt(this.receiver);
         ByteBufUtils.writeUTF8String(buf, this.message);
     }
 
@@ -47,7 +48,7 @@ public class SMSSendMessage implements IMessage {
                 EntityPlayerMP playerMP = ctx.getServerHandler().player;
                 PhoneSavedData data = PhoneSavedData.get(playerMP.world);
 
-                data.getDataFromPhone(message.receiver).addSMS(message.sender, message.message, new Date(), data);
+                data.addSMS(message.sender, message.receiver, message.message);
             }
             return null; // no response in this case
         }

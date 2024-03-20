@@ -36,7 +36,7 @@ public class PhoneItem extends ItemBase {
         if(System.currentTimeMillis() >= this.lastClick + 100) {
             ScreenListener.phoneOpen = !ScreenListener.phoneOpen;
             this.lastClick = System.currentTimeMillis();
-            MylifeKeyBindings.num = String.valueOf(this.getNumber(playerIn.getHeldItem(handIn)));
+            MylifeKeyBindings.num = this.getNumber(playerIn.getHeldItem(handIn));
             MyLifeMod.MYIFE_NETWORK.sendToServer(new SMSSendMessage(MylifeKeyBindings.num, MylifeKeyBindings.num, "coucou ma poule ca va ?"));
         }
 
@@ -49,7 +49,7 @@ public class PhoneItem extends ItemBase {
     {
         if(!worldIn.isRemote) {
             if(getNumber(stack) == 0) this.setNumber(stack, worldIn);
-            PhoneSavedData.get(worldIn).setOwner(entityIn.getPersistentID(), this.getNumber(stack) + "");
+            PhoneSavedData.get(worldIn).setOwner(entityIn.getPersistentID(), this.getNumber(stack));
         }
     }
     public void setNumber(ItemStack itemStack, World world)
