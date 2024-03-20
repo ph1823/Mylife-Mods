@@ -1,4 +1,4 @@
-package fr.ph1823.mylife.utility;
+package fr.ph1823.mylife.utility.phone;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,6 +8,7 @@ import java.util.Date;
 public class SMS {
     private String message;
     private Date date;
+    private Contact contact;
     private final SimpleDateFormat SMS_FORMATTER = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
 
 
